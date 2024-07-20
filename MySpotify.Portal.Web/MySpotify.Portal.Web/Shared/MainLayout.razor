@@ -1,0 +1,23 @@
+﻿@inherits LayoutComponentBase
+@using MySpotify.Portal.Web.Themes;
+
+<MudThemeProvider Theme="@CustomTheme.SpotifyTheme()" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Color="Color.Primary">
+        <MudButton Color="Color.Inherit">Album</MudButton>
+
+        <MudMenu Label="Menu"  Color="Color.Inherit" Dense="true">
+            <MudMenuItem>Sub Menu 1</MudMenuItem>
+            <MudMenuItem>Sub Menu 2</MudMenuItem>
+            <MudMenuItem>Sub Menu 3</MudMenuItem>
+        </MudMenu>
+
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>

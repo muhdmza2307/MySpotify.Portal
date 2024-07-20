@@ -1,0 +1,33 @@
+﻿@page "/grant-access"
+@using Microsoft.Extensions.Options;
+@using MySpotify.Portal.Common.Configurations;
+@using System.Text.Json;
+
+@inject NavigationManager NavigationManager
+@inject IOptions<SpotifyOptions> SpotifyOptionsAccessor
+
+<div class="text-center text-white">
+    <h1 class="display-4">Redirecting to My Spotify Dashboard...</h1>
+    <p>We're redirecting you.</p>
+    <p><a href="#" @onclick="@RedirectToSpotify">Not redirected? Click here to go to Spotify.</a></p>
+</div>
+
+@code {
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            RedirectToSpotify();
+        }
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void RedirectToSpotify()
+    {
+        var options = SpotifyOptionsAccessor.Value;
+        var spotifyAuthUri = $"{options.AuthorizeUri}?response_type=code&client_id={options.ClientId}&scope={options.Scopes}&redirect_uri={options.RedirectUri}";
+        NavigationManager.NavigateTo(spotifyAuthUri);
+    }
+
+}

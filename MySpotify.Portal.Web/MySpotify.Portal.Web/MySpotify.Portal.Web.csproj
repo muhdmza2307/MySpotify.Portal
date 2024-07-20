@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BlazorWebAssemblyEnableDebugging>true</BlazorWebAssemblyEnableDebugging>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.11" PrivateAssets="all" />
+    <PackageReference Include="MudBlazor" Version="7.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Albums\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MySpotify.Portal.Common\MySpotify.Portal.Common.csproj" />
+    <ProjectReference Include="..\MySpotify.Portal.DataServices\MySpotify.Portal.DataServices.csproj" />
+    <ProjectReference Include="..\MySpotify.Portal.Models\MySpotify.Portal.Models.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+﻿@page "/"
+@inject NavigationManager Navigation
+
+<MudContainer Class="ma-4">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@HandleClick">Hit me to get authenticated to this portal</MudButton>
+</MudContainer>
+
+@code {
+    private void HandleClick()
+    {
+        Navigation.NavigateTo("/grant-access");
+    }
+}

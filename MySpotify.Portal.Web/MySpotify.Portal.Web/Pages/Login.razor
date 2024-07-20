@@ -1,0 +1,26 @@
+﻿@page "/login"
+@using MySpotify.Portal.DataServices.Spotify.Api;
+
+@inject NavigationManager Navigation
+@inject ISpotifyTokenProvider SpotifyTokenProvider
+
+@code {
+    private string? code;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(Navigation.Uri);
+        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        code = queryParams["code"];
+
+        if (!string.IsNullOrEmpty(code))
+        {
+            var loginToken = await SpotifyTokenProvider.GetLoginTokenAsync(code!);
+
+            if (!string.IsNullOrEmpty(loginToken))
+            {
+                Navigation.NavigateTo("/my-dashboard");
+            }
+        }
+    }
+}

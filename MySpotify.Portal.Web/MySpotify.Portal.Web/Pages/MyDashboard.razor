@@ -1,0 +1,81 @@
+﻿@page "/my-dashboard"
+
+@using MySpotify.Portal.DataServices.Spotify.Api;
+@using MySpotify.Portal.Models.ResponseModels;
+
+@inject ISpotifyHttpServiceProvider SpotifyHttpServiceProvider
+
+<MudContainer Class="ma-4">
+    <MudGrid>
+        <MudItem xs="6">
+            @if (playListItem == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <MudCard Class="d-flex justify-center mud-width-full py-8" Style="background-color: lightblue;">
+                    <MudCardHeader Style="background-color: red;">
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6" Style="background-color: lightblue; text-align: center;">Featured Playlists</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.PlaylistPlay" Color="Color.Default" />
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent Style="background-color: yellow;">
+                        <MudList T="string" Style="background-color: lightblue">
+                            @foreach (var listItem in playListItem)
+                            {
+                                <MudListItem>
+                                    <AvatarContent>
+                                        <MudAvatar>
+                                            <MudImage Src="@listItem.Images!.FirstOrDefault()!.Url" />
+                                        </MudAvatar>
+                                    </AvatarContent>
+                                    <ChildContent>
+                                        <MudGrid>
+                                            <MudItem xs="6">
+                                                <MudLink Href="@listItem.ExternalUrls!.Spotify">
+                                                    <MudText Typo="Typo.subtitle1" Style="background-color: green;">
+                                                        @listItem.Name
+                                                    </MudText>
+                                                </MudLink>
+                                            </MudItem>
+                                            <MudItem xs="6"><MudText Typo="Typo.subtitle2" Style="background-color: blue; text-align: right">Total @listItem.Tracks!.Total songs</MudText></MudItem>
+                                        </MudGrid>
+                                        <MudText Typo="Typo.subtitle2" Style="background-color: pink;">@listItem.Description</MudText>
+                                    </ChildContent>
+                                </MudListItem>
+                            }
+                        </MudList>
+                    </MudCardContent>
+                </MudCard>
+            }
+        </MudItem>
+
+        <MudFlexBreak />
+
+        <MudItem xs="6">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">Two</MudPaper>
+        </MudItem>
+        <MudItem xs="6">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">Three</MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private IEnumerable<Item>? playListItem;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var service = await SpotifyHttpServiceProvider.GetServiceAsync<PlaylistResponse>()
+            .ConfigureAwait(false);
+
+        var playListResponse = await service.GetAsync("browse/featured-playlists")
+            .ConfigureAwait(false);
+
+        playListItem = playListResponse.Playlists!.Items!.Take(5);
+    }
+}
