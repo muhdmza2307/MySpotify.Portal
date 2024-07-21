@@ -1,0 +1,17 @@
+﻿:root {
+    --custom-padding-small: 4px;
+    --custom-padding-medium: 8px;
+    --custom-padding-large: 16px;
+}
+
+.small-pad {
+    padding: var(--custom-padding-small) !important;
+}
+
+.medium-pad {
+    padding: var(--custom-padding-medium) !important;
+}
+
+.large-pad {
+    padding: var(--custom-padding-large) !important;
+}

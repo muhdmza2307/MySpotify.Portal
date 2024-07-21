@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySpotify.Portal.Models", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySpotify.Portal.Common", "MySpotify.Portal.Common\MySpotify.Portal.Common.csproj", "{9D9039B9-C40E-4D8D-9DBF-31C7AF40D3B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpotify.Portal.DataServices", "MySpotify.Portal.DataServices\MySpotify.Portal.DataServices.csproj", "{136CA274-D301-4BB1-8D57-49BCB0C6C5A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySpotify.Portal.DataServices", "MySpotify.Portal.DataServices\MySpotify.Portal.DataServices.csproj", "{136CA274-D301-4BB1-8D57-49BCB0C6C5A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

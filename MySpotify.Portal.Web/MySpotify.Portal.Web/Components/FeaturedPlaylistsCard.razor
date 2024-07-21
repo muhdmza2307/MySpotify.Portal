@@ -1,0 +1,71 @@
+﻿@using MySpotify.Portal.Web.Components.Cards;
+@using MySpotify.Portal.DataServices.Spotify.Api;
+@using MySpotify.Portal.Models.ResponseModels;
+
+<style>
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+    }
+
+    .badge-container {
+        display: flex;
+        justify-content: flex-end; /* Align the badge to the right */
+    }
+</style>
+
+<MudCard Class="d-flex justify-center py-8 fancy-card">
+    <CardHeader Title="Featured Playlists" Icon="@Icons.Material.Filled.PlaylistPlay" />
+    <MudCardContent class="small-pad">
+        <MudList T="string" Class="large-pad">
+            @foreach (var listItem in PlayListItems)
+            {
+                <MudListItem Class="small-pad">
+                    <AvatarContent>
+                        <MudAvatar>
+                            <MudImage Src="@listItem.Images!.FirstOrDefault()!.Url" />
+                        </MudAvatar>
+                    </AvatarContent>
+                    <ChildContent>
+                        <MudGrid>
+                            <MudItem xs="6">
+                                <div class="content-wrapper">
+                                    <MudLink Href="@listItem.ExternalUrls!.Spotify">
+                                        <MudText Typo="Typo.subtitle1">
+                                            @listItem.Name
+                                        </MudText>
+                                    </MudLink>
+                                </div>
+                            </MudItem>
+                            <MudItem xs="6">
+                                <div class="badge-container">
+                                    <MudBadge Icon="@Icons.Material.Filled.PlayArrow" Color="Color.Tertiary" Class="mx-6 my-4">
+                                        <MudText Typo="Typo.subtitle2">@listItem.Tracks!.Total Songs</MudText>
+                                    </MudBadge>
+                                </div>
+                            </MudItem>
+                        </MudGrid>
+                        <MudGrid>
+                            <MudItem xs="6">
+                                <MudText Typo="Typo.caption">
+                                    @listItem.Description
+                                </MudText>
+                            </MudItem>
+                        </MudGrid>
+                    </ChildContent>
+                </MudListItem>
+            }
+        </MudList>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter] public IEnumerable<Item> PlayListItems { get; set; } = null!;
+
+    private int GetTotalSongs(Tracks? tracks)
+    {
+        return tracks?.Total ?? 0;
+    }
+}

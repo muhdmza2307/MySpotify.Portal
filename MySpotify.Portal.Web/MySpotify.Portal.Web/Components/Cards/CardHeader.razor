@@ -1,0 +1,13 @@
+﻿<MudCardHeader Class="small-pad">
+    <CardHeaderContent>
+        <MudText Typo="Typo.h6" Style="text-align: center;">@Title</MudText>
+    </CardHeaderContent>
+    <CardHeaderActions>
+        <MudIconButton Icon="@Icon" Color="Color.Default" />
+    </CardHeaderActions>
+</MudCardHeader>
+
+@code {
+    [Parameter] public string Title { get; set; } = null!;
+    [Parameter] public string Icon { get; set; } = null!;
+}
