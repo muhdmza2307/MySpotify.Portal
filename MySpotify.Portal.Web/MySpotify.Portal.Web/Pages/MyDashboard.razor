@@ -3,6 +3,7 @@
 @using MySpotify.Portal.Web.Components
 @using MySpotify.Portal.DataServices.Spotify.Api;
 @using MySpotify.Portal.Models.ResponseModels;
+@using MySpotify.Portal.Common.Constants;
 
 @inject ISpotifyHttpServiceProvider SpotifyHttpServiceProvider
 
@@ -26,13 +27,24 @@
 <MudContainer Class="ma-4">
     <MudGrid>
         <MudItem xs="6">
-            @if (PlayListItems == null)
+            @if (PlayListsItems == null)
             {
                 <p><em>Loading...</em></p>
             }
             else
             {
-                <FeaturedPlaylistsCard PlayListItems=@PlayListItems />
+                <FeaturedPlaylistsCard PlayListsItems=@PlayListsItems />
+            }
+        </MudItem>
+
+        <MudItem xs="6">
+            @if (TopArtistsItems == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <TopArtistsCard TopArtistsItems=@TopArtistsItems />
             }
         </MudItem>
 
@@ -48,16 +60,32 @@
 </MudContainer>
 
 @code {
-    private IEnumerable<Item>? PlayListItems;
+    private IEnumerable<Item>? PlayListsItems;
+    private IEnumerable<Item>? TopArtistsItems;
 
     protected override async Task OnInitializedAsync()
     {
-        var service = await SpotifyHttpServiceProvider.GetServiceAsync<PlaylistResponse>()
+        var serviceplayLists = await SpotifyHttpServiceProvider.GetServiceAsync<PlaylistResponse>()
             .ConfigureAwait(false);
 
-        var playListResponse = await service.GetAsync("browse/featured-playlists")
+        var playListsResponse = await serviceplayLists.GetAsync(PathSegment.PopularPlayLists)
             .ConfigureAwait(false);
 
-        PlayListItems = playListResponse.Playlists!.Items!.Take(5);
+        PlayListsItems = playListsResponse.Playlists!.Items!.Take(5);
+
+        var serviceTopArtists = await SpotifyHttpServiceProvider.GetServiceAsync<TopArtistResponse>()
+            .ConfigureAwait(false);
+
+        var topArtistsResponse = await serviceTopArtists.GetAsync("me/top/artists", TopArtistsQueryParams())
+            .ConfigureAwait(false);
+
+        TopArtistsItems = topArtistsResponse.Items!;
     }
+
+    private static object TopArtistsQueryParams() =>
+        new
+        {
+            limit = 5,
+            offset = 0
+        };
 }

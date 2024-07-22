@@ -17,10 +17,10 @@
 </style>
 
 <MudCard Class="d-flex justify-center py-8 fancy-card">
-    <CardHeader Title="Featured Playlists" Icon="@Icons.Material.Filled.PlaylistPlay" />
+    <CardHeader Title="My Top Picked Artists" Icon="@Icons.Material.Filled.People" />
     <MudCardContent class="small-pad">
         <MudList T="string" Class="large-pad">
-            @foreach (var listItem in PlayListsItems)
+            @foreach (var listItem in TopArtistsItems)
             {
                 <MudListItem Class="small-pad">
                     <AvatarContent>
@@ -41,8 +41,8 @@
                             </MudItem>
                             <MudItem xs="6">
                                 <div class="badge-container">
-                                    <MudBadge Icon="@Icons.Material.Filled.PlayArrow" Color="Color.Tertiary" Class="mx-6 my-4">
-                                        <MudText Typo="Typo.subtitle2">@listItem.Tracks!.Total Songs</MudText>
+                                    <MudBadge Content="@listItem.Followers!.Total" Color="Color.Primary" Overlap="true" Class="mx-6 my-4">
+                                        <MudText Typo="Typo.subtitle2">Followers</MudText>
                                     </MudBadge>
                                 </div>
                             </MudItem>
@@ -50,7 +50,7 @@
                         <MudGrid>
                             <MudItem xs="6">
                                 <MudText Typo="Typo.caption">
-                                    @listItem.Description
+                                    @listItem.Genres!.FirstOrDefault()!.ToString()
                                 </MudText>
                             </MudItem>
                         </MudGrid>
@@ -62,10 +62,5 @@
 </MudCard>
 
 @code {
-    [Parameter] public IEnumerable<Item> PlayListsItems { get; set; } = null!;
-
-    private int GetTotalSongs(Tracks? tracks)
-    {
-        return tracks?.Total ?? 0;
-    }
+    [Parameter] public IEnumerable<Item> TopArtistsItems { get; set; } = null!;
 }
