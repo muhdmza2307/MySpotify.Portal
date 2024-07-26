@@ -27,5 +27,15 @@ namespace MySpotify.Portal.Models.ResponseModels
         [JsonProperty("tracks")] public Tracks? Tracks { get; set; }
         [JsonProperty("type")] public string? Type { get; set; }
         [JsonProperty("uri")] public string? Uri { get; set; }
+        [JsonProperty("album")] public Album? Album { get; set; }
+        [JsonProperty("artists")] public IEnumerable<Artist>? Artists { get; set; }
+        [JsonProperty("available_markets")] public IEnumerable<string>? AvailableMarkets { get; set; }
+        [JsonProperty("disc_number")] public int? DiscNumber { get; set; }
+        [JsonProperty("duration_ms")] public int? DurationMs { get; set; }
+        [JsonProperty("explicit")] public bool? Explicit { get; set; }
+        [JsonProperty("external_ids")] public ExternalIds? ExternalIds { get; set; }
+        [JsonProperty("preview_url")] public string? PreviewUrl { get; set; }
+        [JsonProperty("track_number")] public int? TrackNumber { get; set; }
+        [JsonProperty("is_local")] public bool? IsLocal { get; set; }
     }
 }

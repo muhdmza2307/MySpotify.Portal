@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MySpotify.Portal.Models.ResponseModels
 {
-    public class TopArtistResponse
+    public class TopListBase
     {
         [JsonProperty("href")] public string? Href { get; set; }
         [JsonProperty("limit")] public int? Limit { get; set; }
@@ -15,6 +15,6 @@ namespace MySpotify.Portal.Models.ResponseModels
         [JsonProperty("offset")] public int? Offset { get; set; }
         [JsonProperty("previous")] public object? Previous { get; set; }
         [JsonProperty("total")] public int? Total { get; set; }
-        [JsonProperty("items")] public List<Item>? Items { get; set; }
+        [JsonProperty("items")] public IEnumerable<Item>? Items { get; set; }
     }
 }

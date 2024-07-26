@@ -8,7 +8,8 @@ namespace MySpotify.Portal.Common.Constants
 {
     public static class TopType
     {
-        public static string Artists { get; set; } = "artists";
-        public static string Tracks { get; set; } = "tracks";
+        public const string Artist = "artist";
+        public const string Artists = "artists";
+        public const string Tracks =  "tracks";
     }
 }

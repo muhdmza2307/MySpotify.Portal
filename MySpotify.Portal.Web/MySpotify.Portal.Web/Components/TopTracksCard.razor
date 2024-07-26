@@ -21,15 +21,15 @@
 </style>
 
 <MudCard Class="d-flex justify-center py-8 fancy-card">
-    <CardHeader Title="My Top Picked Artists" Icon="@Icons.Material.Filled.People" />
+    <CardHeader Title="My Top Picked Tracks" Icon="@Icons.Material.Filled.Audiotrack" />
     <MudCardContent class="small-pad">
         <MudList T="string" Class="large-pad">
-            @foreach (var listItem in TopArtistsItems)
+            @foreach (var listItem in TopTracksItems)
             {
                 <MudListItem Class="small-pad">
                     <div class="list-item-content">
                         <MudAvatar class="avatar-container">
-                            <MudImage Src="@listItem.Images!.FirstOrDefault()!.Url" />
+                            <MudImage Src="@listItem.Album!.Images!.FirstOrDefault()!.Url" />
                         </MudAvatar>
                         <div class="text-content">
                             <MudLink Href="@listItem.ExternalUrls!.Spotify">
@@ -38,7 +38,7 @@
                                 </MudText>
                             </MudLink>
                             <MudText Typo="Typo.caption">
-                                @listItem.Genres!.FirstOrDefault()!.ToString()
+                                @listItem.Artists!.FirstOrDefault()!.Name - @listItem.Album!.Name
                             </MudText>
                         </div>
                     </div>
@@ -49,5 +49,5 @@
 </MudCard>
 
 @code {
-    [Parameter] public IEnumerable<Item> TopArtistsItems { get; set; } = null!;
+    [Parameter] public IEnumerable<Item> TopTracksItems { get; set; } = null!;
 }

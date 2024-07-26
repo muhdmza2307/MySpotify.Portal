@@ -8,7 +8,7 @@ namespace MySpotify.Portal.Common.Constants
 {
     public static class TimeRange
     {
-        public static string Medium { get; set; } = "medium_term";
-        public static string Long { get; set; } = "long_term";
+        public const string Medium = "medium_term";
+        public const string Long = "long_term";
     }
 }

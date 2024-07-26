@@ -22,67 +22,147 @@
         transform: scale(1.05);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
+
+    .carousel-image {
+        width: 100%; /* Make the image width 100% of its container */
+        height: auto; /* Maintain aspect ratio */
+        object-fit: cover; /* Cover the container while preserving aspect ratio */
+        object-position: 50% 34%;
+    }
+
+    .carousel-item {
+        height: 500px; /* Set desired height */
+        overflow: hidden; /* Hide overflow to ensure proper clipping */
+    }
+
+
+    .carousel-text {
+        position: absolute;
+        bottom: 10px; /* Distance from the bottom of the container */
+        left: 10px; /* Distance from the left of the container */
+        color: white; /* Change text color for visibility */
+        font-size: 24px; /* Adjust font size as needed */
+        background-color: rgba(0, 0, 0, 0.5); /* Optional: Add background for better readability */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .carousel-with-border-radius {
+        border-radius: 15px; /* Adjust the radius as needed */
+        overflow: hidden; /* Ensures that the content inside respects the border radius */
+    }
+
+    /* Optional: If you want to style the carousel items as well */
+    .carousel-item-with-border-radius img {
+        border-radius: 15px; /* Same radius to match the container */
+    }
 </style>
 
-<MudContainer Class="ma-4">
+<MudContainer Class="px-6 py-6" MaxWidth="MaxWidth.False">
     <MudGrid>
-        <MudItem xs="6">
-            @if (PlayListsItems == null)
-            {
-                <p><em>Loading...</em></p>
-            }
-            else
-            {
-                <FeaturedPlaylistsCard PlayListsItems=@PlayListsItems />
-            }
-        </MudItem>
+        <MudItem xs="3">
 
-        <MudItem xs="6">
-            @if (TopArtistsItems == null)
-            {
-                <p><em>Loading...</em></p>
-            }
-            else
-            {
-                <TopArtistsCard TopArtistsItems=@TopArtistsItems />
-            }
         </MudItem>
+        <MudItem xs="9">
+            <MudGrid>
+                <MudItem xs="12">
+                    @if (FollowedArtistsItems == null)
+                    {
+                        <p><em>Loading...</em></p>
+                    }
+                    else
+                    {
+                        <MudCarousel Class="mud-width-full carousel-with-border-radius" Style="min-height:300px; width:100%; height:200px" ShowArrows="@true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+                            @foreach (var listItem in FollowedArtistsItems)
+                            {
+                                <MudCarouselItem Transition="@Transition.Slide" Color="@Color.Primary">
+                                    <div class="d-flex carousel-item-with-border-radius" style="height:100%">
+                                        <MudImage Src="@listItem.Images!.FirstOrDefault()!.Url" Class="carousel-image" Width="200" Height="250" />
+                                        <div class="carousel-text">
+                                            <MudText Typo="Typo.h6">
+                                                @listItem.Name
+                                            </MudText>
+                                        </div>
+                                    </div>
+                                </MudCarouselItem>
+                            }
+                        </MudCarousel>
+                    }
+                </MudItem>
+            </MudGrid>
+            <MudGrid>
 
-        <MudFlexBreak />
+                <MudItem xs="4">
+                    @if (TopArtistsItems == null)
+                    {
+                        <p><em>Loading...</em></p>
+                    }
+                    else
+                    {
+                        <TopArtistsCard TopArtistsItems=@TopArtistsItems />
+                    }
+                </MudItem>
 
-        <MudItem xs="6">
-            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">Two</MudPaper>
-        </MudItem>
-        <MudItem xs="6">
-            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">Three</MudPaper>
+                <MudItem xs="4">
+                    @if (TopTracksItems == null)
+                    {
+                        <p><em>Loading...</em></p>
+                    }
+                    else
+                    {
+                        <TopTracksCard TopTracksItems=@TopTracksItems />
+                    }
+                </MudItem>
+
+                <MudFlexBreak />
+            </MudGrid>
         </MudItem>
     </MudGrid>
 </MudContainer>
 
 @code {
-    private IEnumerable<Item>? PlayListsItems;
+    private IEnumerable<Item>? FollowedArtistsItems;
     private IEnumerable<Item>? TopArtistsItems;
+    private IEnumerable<Item>? TopTracksItems;
 
     protected override async Task OnInitializedAsync()
     {
-        var serviceplayLists = await SpotifyHttpServiceProvider.GetServiceAsync<PlaylistResponse>()
+        var serviceFollowedArtists = await SpotifyHttpServiceProvider.GetServiceAsync<FollowedArtistsResponse>()
+           .ConfigureAwait(false);
+
+        var followedArtistsResponse = await serviceFollowedArtists.GetAsync(PathSegment.FollowedItems,
+            FollowedQueryParams())
             .ConfigureAwait(false);
 
-        var playListsResponse = await serviceplayLists.GetAsync(PathSegment.PopularPlayLists)
+        FollowedArtistsItems = followedArtistsResponse.Artists!.Items!;
+
+        var serviceTopArtists = await SpotifyHttpServiceProvider.GetServiceAsync<TopArtistsResponse>()
             .ConfigureAwait(false);
 
-        PlayListsItems = playListsResponse.Playlists!.Items!.Take(5);
-
-        var serviceTopArtists = await SpotifyHttpServiceProvider.GetServiceAsync<TopArtistResponse>()
-            .ConfigureAwait(false);
-
-        var topArtistsResponse = await serviceTopArtists.GetAsync("me/top/artists", TopArtistsQueryParams())
+        var topArtistsResponse = await serviceTopArtists.GetAsync(string.Format(PathSegment.TopItems, TopType.Artists), 
+            TopQueryParams())
             .ConfigureAwait(false);
 
         TopArtistsItems = topArtistsResponse.Items!;
+
+        var serviceTopTracks = await SpotifyHttpServiceProvider.GetServiceAsync<TopTracksResponse>()
+            .ConfigureAwait(false);
+
+        var topTracksResponse = await serviceTopArtists.GetAsync(string.Format(PathSegment.TopItems, TopType.Tracks),
+            TopQueryParams())
+            .ConfigureAwait(false);
+
+        TopTracksItems = topTracksResponse.Items!;
     }
 
-    private static object TopArtistsQueryParams() =>
+    private static object FollowedQueryParams() =>
+        new
+        {
+            type = TopType.Artist,
+            limit = 5
+        };
+
+    private static object TopQueryParams() =>
         new
         {
             limit = 5,

@@ -8,7 +8,8 @@ namespace MySpotify.Portal.Common.Constants
 {
     public static class PathSegment
     {
-        public static string PopularPlayLists { get; set; } = "browse/featured-playlists";
-        public static string TopItems { get; set; } = "me/top";
+        public const string PopularPlayLists = "browse/featured-playlists";
+        public const string TopItems = "me/top/{0}";
+        public const string FollowedItems = "me/following";
     }
 }
